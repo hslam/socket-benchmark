@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/hslam/socket"
-	"github.com/hslam/socket/ipc"
+	"github.com/hslam/socket/unix"
 	"github.com/hslam/stats"
 	"log"
 )
@@ -33,7 +33,7 @@ func main() {
 	var wrkClients []stats.Client
 	var msg = make([]byte, msg)
 	for i := 0; i < clients; i++ {
-		s := ipc.NewSocket()
+		s := unix.NewSocket()
 		if conn, err := s.Dial(addr); err != nil {
 			log.Fatalln("dailing error: ", err)
 		} else {

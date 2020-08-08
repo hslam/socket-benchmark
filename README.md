@@ -157,7 +157,7 @@ Result:
 	Response ok:	1000000 (100.00%)
 	Errors:	0 (0.00%)
 ```
-## ipc
+## unix
 ```
 ./client -addr=:9999 -total=100000 -clients=1
 Summary:

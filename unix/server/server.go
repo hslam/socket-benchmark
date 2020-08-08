@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/hslam/socket"
-	"github.com/hslam/socket/ipc"
+	"github.com/hslam/socket/unix"
 	"log"
 	"net/http"
 	_ "net/http/pprof"
@@ -19,7 +19,7 @@ func main() {
 	go func() {
 		log.Println(http.ListenAndServe(":6060", nil))
 	}()
-	s := ipc.NewSocket()
+	s := unix.NewSocket()
 	l, err := s.Listen(addr)
 	if err != nil {
 		log.Fatalln(err)
