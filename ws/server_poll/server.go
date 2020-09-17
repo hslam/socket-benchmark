@@ -17,26 +17,19 @@ func init() {
 
 func main() {
 	go http.ListenAndServe(":6060", nil)
-	sock := socket.NewHTTPSocket(nil)
+	sock := socket.NewWSSocket(nil)
 	l, err := sock.Listen(addr)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	for {
-		conn, err := l.Accept()
+	l.ServeMessages(func(messages socket.Messages) (socket.Context, error) {
+		return messages, nil
+	}, func(context socket.Context) error {
+		messages := context.(socket.Messages)
+		msg, err := messages.ReadMessage()
 		if err != nil {
-			log.Fatalln(err)
+			return err
 		}
-		go func(conn socket.Conn) {
-			messages := conn.Messages()
-			for {
-				msg, err := messages.ReadMessage()
-				if err != nil {
-					break
-				}
-				messages.WriteMessage(msg)
-			}
-			messages.Close()
-		}(conn)
-	}
+		return messages.WriteMessage(msg)
+	})
 }
